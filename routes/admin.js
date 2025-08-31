@@ -9,6 +9,7 @@ export const products = [];
 router.get("/add-product", (req, res, next) => {
   res.render("add-product", {
     pageTitle: "상품 추가",
+    path: "/admin/add-product",
   });
 });
 

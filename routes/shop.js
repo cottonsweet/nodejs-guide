@@ -10,8 +10,9 @@ router.get("/", (req, res, next) => {
 
   // 템플릿으로 데이터 전달
   res.render("shop", {
-    pageTitle: "Shop",
+    pageTitle: "상점",
     productItems: productItems,
+    path: "/",
   });
 });
 

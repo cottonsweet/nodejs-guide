@@ -12,7 +12,9 @@ import rootDir from "./utils/path.js";
 const app = express();
 const PORT = 4000;
 
+// view engine을 사용하여 pug 파일을 렌더링
 app.set("view engine", "pug");
+// key: views, files:folderName key는 express 내부에서 정해진 값으로 변경 불가
 app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
