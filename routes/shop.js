@@ -13,6 +13,7 @@ router.get("/", (req, res, next) => {
     pageTitle: "상점",
     productItems: productItems,
     path: "/",
+    hasProducts: productItems.length > 0,
   });
 });
 
