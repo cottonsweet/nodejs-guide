@@ -6,7 +6,13 @@ import { products } from "./admin.js";
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.render("shop");
+  const productItems = products;
+
+  // 템플릿으로 데이터 전달
+  res.render("shop", {
+    productItems: productItems,
+    docTitle: "Shop",
+  });
 });
 
 export default router;
