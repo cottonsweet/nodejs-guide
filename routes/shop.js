@@ -14,6 +14,10 @@ router.get("/", (req, res, next) => {
     productItems: productItems,
     path: "/",
     hasProducts: productItems.length > 0,
+
+    // hbs layout
+    activeShop: true,
+    productCSS: true,
   });
 });
 

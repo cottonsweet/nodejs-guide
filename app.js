@@ -13,8 +13,15 @@ import rootDir from "./utils/path.js";
 const app = express();
 const PORT = 4000;
 
-// hbs 라는 엔진을 등록하고, 확장자 파일또한 hbs로 생성한다.
-app.engine("hbs", expressHbs());
+// hbs 라는 엔진을 등록하고, 확장자 파일 또한 hbs로 생성한다.
+app.engine(
+  "hbs",
+  expressHbs({
+    layoutsDir: "views/layouts/",
+    defaultLayout: "main-layout",
+    extname: "hbs",
+  })
+);
 app.set("view engine", "hbs");
 
 // view engine을 사용하여 pug 파일을 렌더링
