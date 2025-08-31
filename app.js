@@ -22,7 +22,10 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(rootDir, "views", "404.html"));
+  res.status(400).render("404", {
+    pageTitle: "404-Not Found Page",
+    content: "페이지를 찾을 수 없습니다.",
+  });
 });
 
 app.listen(PORT);
