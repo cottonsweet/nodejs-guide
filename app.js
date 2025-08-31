@@ -1,13 +1,19 @@
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
-import rootDir from "./utils/path.js";
+
 // router
 import adminRoutes from "./routes/admin.js";
 import shopRoutes from "./routes/shop.js";
 
+// utils
+import rootDir from "./utils/path.js";
+
 const app = express();
 const PORT = 4000;
+
+app.set("view engine", "pug");
+app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, "public"))); // 정적으로 서비스 원하는 경로 -> public 폴더로 포워딩
