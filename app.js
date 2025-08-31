@@ -1,21 +1,20 @@
 import express from "express";
+import bodyParser from "body-parser";
+
+// router
+import adminRoutes from "./routes/admin.js";
+import shopRoutes from "./routes/shop.js";
 
 const app = express();
+const PORT = 4000;
 
-app.use("/", (req, res, next) => {
-  console.log("first middleware");
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  next();
+app.use(adminRoutes);
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+  res.status(404).send("<h1>Page not found</h1>");
 });
 
-app.use("/products", (req, res, next) => {
-  console.log("second middleware");
-  res.send("프로덕트 페이지");
-});
-
-app.use("/", (req, res, next) => {
-  console.log("first middleware");
-  res.send("루트 페이지");
-});
-
-app.listen(4000);
+app.listen(PORT);
