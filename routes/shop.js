@@ -1,11 +1,11 @@
 import express from "express";
 import path from "path";
-const __dirname = path.resolve();
+import rootDir from "../utils/path.js";
 
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "views", "shop.html"));
+  res.sendFile(path.join(rootDir, "views", "shop.html"));
 });
 
 export default router;
