@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
-import expressHbs from "express-handlebars";
+// import expressHbs from "express-handlebars";
 
 // router
 import adminRoutes from "./routes/admin.js";
@@ -14,15 +14,18 @@ const app = express();
 const PORT = 4000;
 
 // hbs 라는 엔진을 등록하고, 확장자 파일 또한 hbs로 생성한다.
-app.engine(
-  "hbs",
-  expressHbs({
-    layoutsDir: "views/layouts/",
-    defaultLayout: "main-layout",
-    extname: "hbs",
-  })
-);
-app.set("view engine", "hbs");
+// app.engine(
+//   "hbs",
+//   expressHbs({
+//     layoutsDir: "views/layouts/",
+//     defaultLayout: "main-layout",
+//     extname: "hbs",
+//   })
+// );
+// app.set("view engine", "hbs");
+
+// esj
+app.set("view engine", "ejs");
 
 // view engine을 사용하여 pug 파일을 렌더링
 // app.set("view engine", "pug");
@@ -37,7 +40,7 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(400).render("404", {
+  res.status(404).render("404", {
     pageTitle: "404-Not Found Page dd",
     content: "페이지를 찾을 수 없습니다.",
   });
