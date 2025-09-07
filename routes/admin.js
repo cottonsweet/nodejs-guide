@@ -1,27 +1,11 @@
 import express from "express";
-import path from "path";
-import rootDir from "../utils/path.js";
+import { getAddProduct } from "../controllers/products.js";
+import { postAddProduct } from "../controllers/products.js";
 
 const router = express.Router();
 
-export const products = [];
+router.get("/add-product", getAddProduct);
 
-router.get("/add-product", (req, res, next) => {
-  res.render("add-product", {
-    pageTitle: "상품 추가",
-    path: "/admin/add-product",
-
-    // hbs layout
-    formCSS: true,
-    productCSS: true,
-    activeAddProduct: true,
-  });
-});
-
-router.post("/add-product", (req, res, next) => {
-  console.log(req.body);
-  products.push({ title: req.body.title });
-  res.redirect("/");
-});
+router.post("/add-product", postAddProduct);
 
 export default router;
