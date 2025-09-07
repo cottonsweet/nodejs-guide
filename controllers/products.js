@@ -1,4 +1,4 @@
-export const products = [];
+import { Product } from "../models/product.js";
 
 export const getAddProduct = (req, res, next) => {
   res.render("add-product", {
@@ -13,20 +13,20 @@ export const getAddProduct = (req, res, next) => {
 };
 
 export const postAddProduct = (req, res, next) => {
-  console.log(req.body);
-  products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save();
   res.redirect("/");
 };
 
 export const getProducts = (req, res, next) => {
-  const productItems = products;
+  const products = Product.fetchAll();
 
   // 템플릿으로 데이터 전달
   res.render("shop", {
     pageTitle: "상점",
-    productItems: productItems,
+    productItems: products,
     path: "/",
-    hasProducts: productItems.length > 0,
+    hasProducts: products.length > 0,
 
     // hbs layout
     activeShop: true,
