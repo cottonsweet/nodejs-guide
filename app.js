@@ -7,6 +7,9 @@ import path from "path";
 import adminRoutes from "./routes/admin.js";
 import shopRoutes from "./routes/shop.js";
 
+// Controller
+import { get404Controller } from "./controllers/error.js";
+
 // utils
 import rootDir from "./utils/path.js";
 
@@ -39,11 +42,6 @@ app.use(express.static(path.join(rootDir, "public"))); // 정적으로 서비스
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404).render("404", {
-    pageTitle: "404-Not Found Page dd",
-    content: "페이지를 찾을 수 없습니다.",
-  });
-});
+app.use(get404Controller);
 
 app.listen(PORT);
