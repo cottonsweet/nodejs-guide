@@ -73,14 +73,14 @@ export const postCart = async (req, res, next) => {
   }
 };
 
-export const postCartDeleteProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  req.user
-    .deleteItemFromCart(prodId)
-    .then((result) => {
-      res.redirect("/cart");
-    })
-    .catch((err) => console.log(err));
+export const postCartDeleteProduct = async (req, res, next) => {
+  try {
+    const prodId = req.body.productId;
+    await req.user.removeFromCart(prodId);
+    res.redirect("/cart");
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const postOrder = (req, res, next) => {
