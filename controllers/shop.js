@@ -43,17 +43,21 @@ export const getIndex = (req, res, next) => {
     });
 };
 
-export const getCart = (req, res, next) => {
-  req.user
-    .getCart()
-    .then((products) => {
+export const getCart = async (req, res, next) => {
+  try {
+    const user = await req.user.populate("cart.items.productId");
+    console.log(user.cart.items);
+    const products = user.cart.items;
+    if (products) {
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
       });
-    })
-    .catch((err) => console.log(err));
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const postCart = async (req, res, next) => {
