@@ -53,39 +53,37 @@ export const getEditProduct = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-export const postEditProduct = (req, res, next) => {
+export const postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDesc,
-    updatedImageUrl,
-    prodId
-  );
-  product
-    .save()
-    .then((result) => {
-      console.log("UPDATED PRODUCT!");
-      res.redirect("/admin/products");
-    })
-    .catch((err) => console.log(err));
+  try {
+    const editProduct = await Product.findById(prodId);
+    editProduct.title = updatedTitle;
+    editProduct.price = updatedPrice;
+    editProduct.updatedImageUrl = updatedImageUrl;
+    editProduct.updatedDesc = updatedDesc;
+    await editProduct.save();
+    console.log("Updated Product !");
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then((products) => {
-      res.render("admin/products", {
-        prods: products,
-        pageTitle: "Admin Products",
-        path: "/admin/products",
-      });
-    })
-    .catch((err) => console.log(err));
+export const getProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    res.render("admin/products", {
+      prods: products,
+      pageTitle: "Admin Products",
+      path: "/admin/products",
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const postDeleteProduct = (req, res, next) => {
