@@ -1,40 +1,33 @@
 import Product from "../models/product.js";
 
-export const getProducts = (req, res, next) => {
-  Product.find()
-    .then((products) => {
-      console.log(products);
+export const getProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    if (products) {
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
       });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-export const getProduct = (req, res, next) => {
+export const getProduct = async (req, res, next) => {
   const prodId = req.params.productId;
-  // Product.findAll({ where: { id: prodId } })
-  //   .then(products => {
-  //     res.render('shop/product-detail', {
-  //       product: products[0],
-  //       pageTitle: products[0].title,
-  //       path: '/products'
-  //     });
-  //   })
-  //   .catch(err => console.log(err));
-  Product.findById(prodId)
-    .then((product) => {
-      res.render("shop/product-detail", {
-        product: product,
-        pageTitle: product.title,
-        path: "/products",
-      });
-    })
-    .catch((err) => console.log(err));
+  try {
+    const product = await Product.findById(prodId);
+    console.log(product);
+    res.render("shop/product-detail", {
+      product: product,
+      pageTitle: product.title,
+      path: "/products",
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const getIndex = (req, res, next) => {
