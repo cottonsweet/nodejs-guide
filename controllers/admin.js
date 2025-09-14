@@ -18,7 +18,10 @@ export const postAddProduct = (req, res, next) => {
     imageUrl,
     price,
     description,
+    userId: req.user,
   });
+
+  console.log(req.user);
   product
     .save()
     .then((result) => {
