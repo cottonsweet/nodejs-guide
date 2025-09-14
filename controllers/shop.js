@@ -1,4 +1,5 @@
 import { Product } from "../models/product.js";
+import { Cart } from "../models/cart.js";
 
 export const getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
@@ -12,8 +13,13 @@ export const getProducts = (req, res, next) => {
 
 export const getProduct = (req, res, next) => {
   const productId = req.params.productId;
-  Product.findById(productId, (product) => console.log(product));
-  res.redirect("/");
+  Product.findById(productId, (product) => {
+    res.render("shop/product-detail", {
+      product: product,
+      pageTitle: product.title,
+      path: "/products",
+    });
+  });
 };
 
 export const getIndex = (req, res, next) => {
@@ -27,9 +33,48 @@ export const getIndex = (req, res, next) => {
 };
 
 export const getCart = (req, res, next) => {
-  res.render("shop/cart", {
-    path: "/cart",
-    pageTitle: "Your Cart",
+  Cart.getCart((cart) => {
+    Product.fetchAll((products) => {
+      const cartProducts = [];
+
+      // cart가 null이거나 products가 없는 경우 처리
+      if (cart && cart.products) {
+        for (let product of products) {
+          const cartProductData = cart.products.find(
+            (prod) => prod.id === product.id
+          );
+          if (cartProductData) {
+            cartProducts.push({
+              productData: product,
+              qty: cartProductData.qty,
+            });
+          }
+        }
+      }
+
+      res.render("shop/cart", {
+        path: "/cart",
+        pageTitle: "Your Cart",
+        products: cartProducts,
+      });
+    });
+  });
+};
+
+export const postCart = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId, (product) => {
+    Cart.addProduct(prodId, product.price, () => {
+      res.redirect("/cart");
+    });
+  });
+};
+
+export const postCartDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId, (product) => {
+    Cart.deleteProduct(prodId, product.price);
+    res.redirect("/cart");
   });
 };
 
