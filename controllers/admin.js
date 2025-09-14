@@ -9,22 +9,16 @@ export const getAddProduct = (req, res, next) => {
 };
 
 export const postAddProduct = (req, res, next) => {
-  if (!req.user) {
-    return res.redirect("/");
-  }
-
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(
+  const product = new Product({
     title,
+    imageUrl,
     price,
     description,
-    imageUrl,
-    null,
-    req.user._id
-  );
+  });
   product
     .save()
     .then((result) => {

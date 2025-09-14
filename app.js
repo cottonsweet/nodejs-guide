@@ -27,45 +27,40 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((req, res, next) => {
-  // 사용자 컬렉션에서 첫 번째 사용자를 찾거나 생성
-  User.findFirstUser()
-    .then((user) => {
-      if (user) {
-        req.user = new User(user.name, user.email, user.cart, user._id);
-        console.log("Using existing user:", user._id);
-        next();
-      } else {
-        // 사용자가 없으면 새로 생성
-        console.log("No users found, creating new user...");
-        const newUser = new User("Test User", "test@example.com", {
-          items: [],
-        });
-        return newUser.save().then((result) => {
-          // 새로 생성된 사용자
-          const user = result.ops[0];
-          req.user = new User(user.name, user.email, user.cart, user._id);
-          console.log("New user created:", user._id);
-          next();
-        });
-      }
-    })
-    .catch((err) => {
-      console.log("Error with user:", err);
-      req.user = null;
-      next();
-    });
-});
+// app.use((req, res, next) => {
+//   // 사용자 컬렉션에서 첫 번째 사용자를 찾거나 생성
+//   User.findFirstUser()
+//     .then((user) => {
+//       if (user) {
+//         req.user = new User(user.name, user.email, user.cart, user._id);
+//         console.log("Using existing user:", user._id);
+//         next();
+//       } else {
+//         // 사용자가 없으면 새로 생성
+//         console.log("No users found, creating new user...");
+//         const newUser = new User("Test User", "test@example.com", {
+//           items: [],
+//         });
+//         return newUser.save().then((result) => {
+//           // 새로 생성된 사용자
+//           const user = result.ops[0];
+//           req.user = new User(user.name, user.email, user.cart, user._id);
+//           console.log("New user created:", user._id);
+//           next();
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("Error with user:", err);
+//       req.user = null;
+//       next();
+//     });
+// });
 
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use(get404);
-
-// mongoConnect((client) => {
-//   console.log(client);
-//   app.listen(4000);
-// });
 
 mongoose
   .connect(DB_URL)
