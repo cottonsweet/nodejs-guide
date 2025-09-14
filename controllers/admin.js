@@ -79,6 +79,8 @@ export const postEditProduct = async (req, res, next) => {
 export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
+
+    console.log(products);
     res.render("admin/products", {
       prods: products,
       pageTitle: "Admin Products",

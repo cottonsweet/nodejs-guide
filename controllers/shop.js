@@ -56,16 +56,17 @@ export const getCart = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-export const postCart = (req, res, next) => {
+export const postCart = async (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId)
-    .then((product) => {
-      return req.user.addToCart(product);
-    })
-    .then((result) => {
-      console.log(result);
+  try {
+    const product = await Product.findById(prodId);
+    if (product) {
+      req.user.addToCart(product);
       res.redirect("/cart");
-    });
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const postCartDeleteProduct = (req, res, next) => {
