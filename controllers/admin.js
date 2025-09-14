@@ -86,12 +86,13 @@ export const getProducts = async (req, res, next) => {
   }
 };
 
-export const postDeleteProduct = (req, res, next) => {
+export const postDeleteProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
-    .then(() => {
-      console.log("DESTROYED PRODUCT");
-      res.redirect("/admin/products");
-    })
-    .catch((err) => console.log(err));
+  try {
+    const removeProductId = await Product.findByIdAndDelete(prodId);
+    console.log("DESTROYED PRODUCT");
+    res.redirect("/admin/products");
+  } catch (err) {
+    console.error(err);
+  }
 };
