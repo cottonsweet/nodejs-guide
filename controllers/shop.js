@@ -9,6 +9,7 @@ export const getProducts = async (req, res, next) => {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
+        isAuthenticated: req.isLoggedIn,
       });
     }
   } catch (err) {
@@ -37,6 +38,7 @@ export const getIndex = (req, res, next) => {
         prods: products,
         pageTitle: "Shop",
         path: "/",
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -54,6 +56,7 @@ export const getCart = async (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
+        isAuthenticated: req.isLoggedIn,
       });
     }
   } catch (err) {
@@ -123,6 +126,7 @@ export const getOrders = async (req, res, next) => {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
+        isAuthenticated: req.isLoggedIn,
       });
     }
   } catch (err) {
