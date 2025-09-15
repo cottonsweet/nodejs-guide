@@ -11,6 +11,8 @@ import User from "./models/user.js";
 
 import adminRoutes from "./routes/admin.js";
 import shopRoutes from "./routes/shop.js";
+import authRoutes from "./routes/auth.js";
+
 import { get404 } from "./controllers/error.js";
 
 import { DB_URL } from "./utils/database.js";
@@ -39,6 +41,7 @@ app.use(async (req, res, next) => {
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(get404);
 
