@@ -115,15 +115,17 @@ export const postOrder = async (req, res, next) => {
   }
 };
 
-export const getOrders = (req, res, next) => {
-  req.user
-    .getOrders()
-    .then((orders) => {
+export const getOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find({ "user.userId": req.user._id });
+    if (orders) {
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
       });
-    })
-    .catch((err) => console.log(err));
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
