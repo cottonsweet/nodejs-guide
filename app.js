@@ -51,7 +51,7 @@ app.use(async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    console.errror(err);
+    console.error(err);
   }
 });
 
