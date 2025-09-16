@@ -1,11 +1,11 @@
-import path from "path";
-import { fileURLToPath } from "url";
-
 import express from "express";
 import bodyParser from "body-parser";
-
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import session from "express-session";
+
+import path from "path";
+import { fileURLToPath } from "url";
 
 import User from "./models/user.js";
 
@@ -28,6 +28,9 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({ secret: "my secret", resave: false, saveUninitialized: false })
+);
 
 app.use(async (req, res, next) => {
   try {
