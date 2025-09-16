@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import session from "express-session";
+import connectMongoDBSession from "connect-mongodb-session";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,8 +21,15 @@ import { DB_URL } from "./utils/database.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
 dotenv.config();
+
+const app = express();
+const MongoDBStore = connectMongoDBSession(session);
+
+const store = new MongoDBStore({
+  uri: DB_URL,
+  collection: "sessions",
+});
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -29,7 +37,12 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
-  session({ secret: "my secret", resave: false, saveUninitialized: false })
+  session({
+    secret: "my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
 );
 
 app.use(async (req, res, next) => {
